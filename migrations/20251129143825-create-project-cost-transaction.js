@@ -24,7 +24,7 @@ module.exports = {
       poNo2: {
         type: Sequelize.STRING,
       },
-      total_cost: {
+      value: {
         type: Sequelize.DECIMAL(15, 0),
       },
       total_rab: {

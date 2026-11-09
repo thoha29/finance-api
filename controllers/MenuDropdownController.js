@@ -52,6 +52,7 @@ class MenuDropdownController {
       const formattedData = value.map((project) => ({
         label: `${project.project_code} : ${project.name}`,
         value: `${project.project_code}`,
+        id: `${project.id}`,
       }));
       res.status(200).json(formattedData);
     } catch (error) {
@@ -89,14 +90,14 @@ class MenuDropdownController {
     try {
       // Ambil data dengan level = 4
       const projectCost = await project_cost.findAll({
-        where: { level: 4 },
-        attributes: ['id', 'prjCost_code', 'name4'], // Ambil hanya kolom yang diperlukan
+        attributes: ['id', 'prjCost_code', 'name4', 'level'], // Ambil hanya kolom yang diperlukan
       });
 
       // Olah data menjadi format yang diinginkan
       const formattedData = projectCost.map((prj_cost) => ({
         label: `${prj_cost.prjCost_code} - ${prj_cost.name4}`,
-        value: prj_cost.prjCost_code, // Gunakan 'id' sebagai value
+        value: prj_cost.prjCost_code, //
+        level: prj_cost.level,
       }));
 
       // Kirimkan hasil dalam respons

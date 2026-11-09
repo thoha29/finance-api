@@ -27,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
       year: DataTypes.STRING,
       poNo1: DataTypes.STRING,
       poNo2: DataTypes.STRING,
-      total_cost: DataTypes.DECIMAL(15, 0),
+      value: DataTypes.DECIMAL(15, 0),
       total_rab: DataTypes.DECIMAL(15, 0),
     },
     {

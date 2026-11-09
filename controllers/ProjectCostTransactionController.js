@@ -46,7 +46,7 @@ class ProjectCostController {
                 { year: { [Sequelize.Op.like]: `%${keyword}%` } },
                 { poNo1: { [Sequelize.Op.like]: `%${keyword}%` } },
                 { poNo2: { [Sequelize.Op.like]: `%${keyword}%` } },
-                { total_cost: { [Sequelize.Op.like]: `%${keyword}%` } },
+                { value: { [Sequelize.Op.like]: `%${keyword}%` } },
                 { total_rab: { [Sequelize.Op.like]: `%${keyword}%` } },
                 {
                   createdAt: {
@@ -77,7 +77,7 @@ class ProjectCostController {
                 { year: { [Sequelize.Op.like]: `%${keyword}%` } },
                 { poNo1: { [Sequelize.Op.like]: `%${keyword}%` } },
                 { poNo2: { [Sequelize.Op.like]: `%${keyword}%` } },
-                { total_cost: { [Sequelize.Op.like]: `%${keyword}%` } },
+                { value: { [Sequelize.Op.like]: `%${keyword}%` } },
                 { total_rab: { [Sequelize.Op.like]: `%${keyword}%` } },
                 {
                   createdAt: {
@@ -123,14 +123,14 @@ class ProjectCostController {
 
   static async createProjectCostTransaction(req, res) {
     try {
-      const { project, location, year, poNo1, poNo2, total_cost } = req.body;
+      const { project, location, year, poNo1, poNo2, value } = req.body;
       let result = await project_cost_transaction.create({
         project,
         location,
         year,
         poNo1,
         poNo2,
-        total_cost,
+        value,
       });
 
       res.status(201).json(result);
@@ -143,7 +143,7 @@ class ProjectCostController {
     try {
       const { id } = req.params;
 
-      const { project, location, year, poNo1, poNo2, total_cost } = req.body;
+      const { project, location, year, poNo1, poNo2, value } = req.body;
 
       const existingData = await project_cost_transaction.findByPk(id);
 
@@ -160,7 +160,7 @@ class ProjectCostController {
         year,
         poNo1,
         poNo2,
-        total_cost,
+        value,
       });
 
       res.status(200).json(existingData);
@@ -172,8 +172,16 @@ class ProjectCostController {
   static async createTransactionAndJournals(req, res) {
     const t = await sequelize.transaction();
     try {
-      const { project, location, year, poNo1, poNo2, journals, total_rab } =
-        req.body;
+      const {
+        project,
+        location,
+        year,
+        poNo1,
+        poNo2,
+        journals,
+        total_rab,
+        value,
+      } = req.body;
 
       // Validasi journals sebelum membuat transaksi
       if (!Array.isArray(journals)) {
@@ -190,6 +198,7 @@ class ProjectCostController {
           poNo1,
           poNo2,
           total_rab,
+          value,
         },
         { transaction: t }
       );
@@ -243,8 +252,16 @@ class ProjectCostController {
     const t = await sequelize.transaction();
     try {
       const { id } = req.params; // ID transaksi utama
-      const { project, location, year, poNo1, poNo2, journals, total_rab } =
-        req.body;
+      const {
+        project,
+        location,
+        year,
+        poNo1,
+        poNo2,
+        journals,
+        total_rab,
+        value,
+      } = req.body;
 
       // Pastikan journals adalah array
       if (!Array.isArray(journals)) {
@@ -261,7 +278,7 @@ class ProjectCostController {
 
       // 2. Update transaction
       await transactionData.update(
-        { project, location, year, poNo1, poNo2, total_rab },
+        { project, location, year, poNo1, poNo2, total_rab, value },
         { transaction: t }
       );
 
